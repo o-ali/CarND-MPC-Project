@@ -1,5 +1,23 @@
-# CarND-Controls-MPC
-Self-Driving Car Engineer Nanodegree Program
+## CarND-Controls-MPC
+Self-Driving Car Engineer Nanodegree Program T2-P5
+
+# Model Predictive Control
+Last project we used a PID controller to go around a track in a car while staying within the lane boundaries. The MPC takes that same problem and frames it as an optimization problem, aiming to find the optimal set of actions with the actuators (brakes, throttle, steer) given a set of restrictions.
+The MPC simulates(predicts) multiple possible actions and selects the one with the smallest cost value. In this project, we use a given reference state as the optimal and aim to follow that path around the track calculating the next step at every step.
+
+## The Model
+The input for the MPC is received from the simulator which returns x,y coordinates for the 'waypoints' and the the vehicle along with the vehicle angle, velocity, current steering angle, and throttle.
+The model loop can be seen in the image below. The solver receives the state vector which contains the information from the simulator and uses the functions listed to calculate a vector of control inputs that will minimize the cost function.
+
+[IMG-Placeholder]
+
+## Timestep and Elapsed Duration
+The timestep and elapsed duration chosen were 10 and 0.1 respectively. This means that we will be optimizing for one second ahead for 10 timesteps making our view forward 10 seconds. These values were chosen following the suggestion in the Q & A video [LINK-Q&A].
+Increasing the timestep would cause the function to do too many calculations and will slow the process, which is meant to occur real time, down too much to be useful. Increasing the elapsed duration caused the model to look too far into the future, and the decision making was affected heavely by irrelevant information.
+
+## Latency
+We are given a value of 100 milliseconds as the delay between the calculations and acuators completing the commands. The model should account for this delay while processing the next move otherwise it will be calculating based on data that doesn't accurately represent the current state of the vehicle.
+To account for this delay, the state passed to the solver is the expected state(velocity, cte, angle) after the delay, seen in main.cpp line 123. (adapted from [link-here]).
 
 ---
 
@@ -47,62 +65,3 @@ is the vehicle starting offset of a straight line (reference). If the MPC implem
 3. For visualization this C++ [matplotlib wrapper](https://github.com/lava/matplotlib-cpp) could be helpful.)
 4.  Tips for setting up your environment are available [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
 5. **VM Latency:** Some students have reported differences in behavior using VM's ostensibly a result of latency.  Please let us know if issues arise as a result of a VM environment.
-
-## Editor Settings
-
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
-
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
-
-## Code Style
-
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
-
-## Project Instructions and Rubric
-
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
-
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/b1ff3be0-c904-438e-aad3-2b5379f0e0c3/concepts/1a2255a0-e23c-44cf-8d41-39b8a3c8264a)
-for instructions and the project rubric.
-
-## Hints!
-
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
