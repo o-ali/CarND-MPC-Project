@@ -9,15 +9,15 @@ The MPC simulates(predicts) multiple possible actions and selects the one with t
 The input for the MPC is received from the simulator which returns x,y coordinates for the 'waypoints' and the the vehicle along with the vehicle angle, velocity, current steering angle, and throttle.
 The model loop can be seen in the image below. The solver receives the state vector which contains the information from the simulator and uses the functions listed to calculate a vector of control inputs that will minimize the cost function.
 
-[IMG-Placeholder]
+![Equation image](https://github.com/o-ali/CarND-MPC-Project/media/MPC_EQ_IMG.jpg)
 
 ## Timestep and Elapsed Duration
-The timestep and elapsed duration chosen were 10 and 0.1 respectively. This means that we will be optimizing for one second ahead for 10 timesteps making our view forward 10 seconds. These values were chosen following the suggestion in the Q & A video [LINK-Q&A].
+The timestep and elapsed duration chosen were 10 and 0.1 respectively. This means that we will be optimizing for one second ahead for 10 timesteps making our view forward 10 seconds. These values were chosen following the suggestion in the [Q & A video](https://www.youtube.com/watch?v=bOQuhpz3YfU).
 Increasing the timestep would cause the function to do too many calculations and will slow the process, which is meant to occur real time, down too much to be useful. Increasing the elapsed duration caused the model to look too far into the future, and the decision making was affected heavely by irrelevant information.
 
 ## Latency
 We are given a value of 100 milliseconds as the delay between the calculations and acuators completing the commands. The model should account for this delay while processing the next move otherwise it will be calculating based on data that doesn't accurately represent the current state of the vehicle.
-To account for this delay, the state passed to the solver is the expected state(velocity, cte, angle) after the delay, seen in main.cpp line 123. (adapted from [link-here]).
+To account for this delay, the state passed to the solver is the expected state(velocity, cte, angle) after the delay, seen in main.cpp line 123. (adapted from [mvirgo Github](https://github.com/mvirgo/MPC-Project)).
 
 ---
 
