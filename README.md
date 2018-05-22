@@ -9,7 +9,7 @@ The MPC simulates(predicts) multiple possible actions and selects the one with t
 The input for the MPC is received from the simulator which returns x,y coordinates for the 'waypoints' and the the vehicle along with the vehicle angle, velocity, current steering angle, and throttle.
 The model loop can be seen in the image below. The solver receives the state vector which contains the information from the simulator and uses the functions listed to calculate a vector of control inputs that will minimize the cost function.
 
-![Equation image](https://github.com/o-ali/CarND-MPC-Project/media/MPC_EQ_IMG.jpg)
+![Equation image](https://github.com/o-ali/CarND-MPC-Project/blob/master/media/MPC_EQ_IMG.jpg)
 
 ## Timestep and Elapsed Duration
 The timestep and elapsed duration chosen were 10 and 0.1 respectively. This means that we will be optimizing for one second ahead for 10 timesteps making our view forward 10 seconds. These values were chosen following the suggestion in the [Q & A video](https://www.youtube.com/watch?v=bOQuhpz3YfU).
